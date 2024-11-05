@@ -1,9 +1,9 @@
 package tree;
 
 public class Node {
-    int Val;
-    Node Left;
-    Node Right;
+    public int Val;
+    public Node Left;
+    public Node Right;
     public Node(int val){
         this.Val = val;
     }
