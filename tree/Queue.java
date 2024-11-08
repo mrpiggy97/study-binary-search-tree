@@ -5,10 +5,6 @@ import java.util.ArrayList;
 public class Queue {
     public QNode Head;
     public Queue(QNode head){
-        if(head == null){
-            String message = "head in Queue cannot be null";
-            throw new Error(message);
-        }
         this.Head = head;
     }
     // the following method will empty the queue and
@@ -46,5 +42,51 @@ public class Queue {
              break;
             }
         }
+    }
+    public static QNode getTreeInPreOrder(Tree tree){
+        QNode currentNode;
+        if(tree.Root == null){
+            currentNode = null;
+        }else{
+            currentNode = new QNode(tree.Root, null);
+        }
+        QNode firstNode = currentNode;
+        while(currentNode != null){
+            QNode rightNode = null;
+            QNode leftNode = null;
+            if(currentNode.TNode.Right != null){
+                rightNode = new QNode(currentNode.TNode.Right, null);
+                // if currentNode has a next node than we need to set 
+                // right node before that next node
+                if(currentNode.Next != null){
+                    rightNode.Next = currentNode.Next;
+                    currentNode.Next = rightNode;
+                }else{
+                    currentNode.Next = rightNode;
+                }
+            }
+            if(currentNode.TNode.Left != null){
+                leftNode = new QNode(currentNode.TNode.Left, null);
+                // if currentNode has a next node than we need to set
+                // left node before that next node
+                if(currentNode.Next != null){
+                    leftNode.Next = currentNode.Next;
+                    currentNode.Next = leftNode;
+                }else{
+                    currentNode.Next = leftNode;
+                }
+            }
+            currentNode = currentNode.Next;
+        }
+        return firstNode;
+    }
+    public static ArrayList<Integer> getQNodeAsArrayList(QNode node){
+        QNode currentNode = node;
+        ArrayList<Integer> nodes = new ArrayList<>();
+        while(currentNode != null){
+            nodes.add(currentNode.TNode.Val);
+            currentNode = currentNode.Next;
+        }
+        return nodes;
     }
 }
