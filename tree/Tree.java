@@ -1,5 +1,7 @@
 package tree;
 
+import java.util.ArrayList;
+
 public class Tree {
     public Node Root;
     public Tree(Node initNode){
@@ -28,7 +30,7 @@ public class Tree {
                     currentNode = currentNode.Right;
                 }else{
                     currentNode.Right = newNode;
-                    currentNode = currentNode.Right;
+                    currentNode = null;
                 }
             }else{
                 // newNode's value is less than currentNode's value,
@@ -39,10 +41,47 @@ public class Tree {
                     currentNode = currentNode.Left;
                 }else{
                     currentNode.Left = newNode;
-                    currentNode = currentNode.Left;
+                    currentNode = null;
                 }
             }
         }
+    }
+    public ArrayList<Integer> traverseInOrder(){
+        ArrayList<Node> nodesToVisit = new ArrayList<>();
+        nodesToVisit.add(this.Root);
+        Queue queue = new Queue(null);
+        while(nodesToVisit.size() > 0){
+            ArrayList<Node> newNodesToVisit = new ArrayList<>();
+            for(Node currentNode : nodesToVisit){
+                if(currentNode.Val == this.Root.Val){
+                    QNode rootQNOde = new QNode(currentNode, null);
+                    queue.Head = rootQNOde;
+                    // add nodes if any to newNodesToVisit
+                    if(currentNode.Left != null){
+                        newNodesToVisit.add(currentNode.Left);
+                    }
+                    if(currentNode.Right != null){
+                        newNodesToVisit.add(currentNode.Right);
+                    }
+                }else{
+                    QNode newNode = new QNode(currentNode, null);
+                    queue.addInOrder(newNode);
+                    // add nodes if any to newNodesToVisit
+                    if(currentNode.Left != null){
+                        newNodesToVisit.add(currentNode.Left);
+                    }
+                    if(currentNode.Right != null){
+                        newNodesToVisit.add(currentNode.Right);
+                    }
+                }
+            }
+            nodesToVisit = newNodesToVisit;
+        }
+        return queue.emptyAndGetAsArray();
+    }
+    public ArrayList<Integer> traverseInPreOrder(){
+        QNode nodesInPreorder = Queue.getTreeInPreOrder(this);
+        return Queue.getQNodeAsArrayList(nodesInPreorder);
     }
     public void delete(int val){
         Node currentNode = this.Root;
@@ -51,29 +90,34 @@ public class Tree {
         Node previousNode = null;
         // first we will go through the tree trying to find a node with that value
         // if we find it we break the loop
-        while(currentNode.Left != null && currentNode.Right != null){
-            // node found break loop
+        while(currentNode != null){
             if(currentNode.Val == val){
-                break;
-            }
-            //go to left side
-            if(val < currentNode.Val){
-                previousNode = currentNode;
-                currentNode = currentNode.Left;
+                // delete and re balance the tree
+                if(previousNode == null){
+                    if(currentNode.Right != null){
+                    }
+                }
             }else{
-                previousNode = currentNode;
-                currentNode = currentNode.Right;
-            }
-        }
-        // node not found, proceed to tell the user
-        if(currentNode.Val != val){
-            System.out.println("No node with that value was found in the tree");
-        }else{
-            // node found proceed to delete
-            // if previousNode is still null that means that we
-            // are deleting the root node
-            if(previousNode == null){
-
+                // keep searching the node
+                if(val > currentNode.Val){
+                    if(currentNode.Right == null){
+                        // no node with that value has been found
+                        // end loop
+                        currentNode = null;
+                    }else{
+                        previousNode = currentNode;
+                        currentNode = currentNode.Right;
+                    }
+                }else{
+                    if(currentNode.Left == null){
+                        // no node with that value has been found
+                        // end loop
+                        currentNode = null;
+                    }else{
+                        previousNode = currentNode;
+                        currentNode = currentNode.Left;
+                    }
+                }
             }
         }
     }
