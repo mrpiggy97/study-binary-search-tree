@@ -43,6 +43,9 @@ public class Queue {
             }
         }
     }
+    
+    // this method will return a QNode that will be contain
+    // all members of the given bst tree in pre order
     public static QNode getTreeInPreOrder(Tree tree){
         QNode currentNode = null;
         if(tree.Root != null){
@@ -76,6 +79,9 @@ public class Queue {
         }
         return firstNode;
     }
+    
+    // this method will return a QNode that will have every
+    // member of the given tree in post order
     public static QNode getTreeInPostOrder(Tree tree){
         QNode currentNode = null;
         if(tree.Root != null){
