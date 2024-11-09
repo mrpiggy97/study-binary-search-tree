@@ -93,7 +93,7 @@ public class Tree {
         // to re balance the tree
         Node previousNode = null;
         // first we will go through the tree trying to find a node with that value
-        // if we find it we break the loop
+        // if we find it we delete it and re-balance the tree
         while(currentNode != null){
             if(currentNode.Val == val){
                 // delete and re balance the tree
