@@ -83,6 +83,10 @@ public class Tree {
         QNode nodesInPreorder = Queue.getTreeInPreOrder(this);
         return Queue.getQNodeAsArrayList(nodesInPreorder);
     }
+    public ArrayList<Integer> traverseInPostOrder(){
+        QNode nodesInPostOrder = Queue.getTreeInPostOrder(this);
+        return Queue.getQNodeArrayListFromEnd(nodesInPostOrder);
+    }
     public void delete(int val){
         Node currentNode = this.Root;
         // previousNode will serve as a holder

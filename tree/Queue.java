@@ -44,18 +44,14 @@ public class Queue {
         }
     }
     public static QNode getTreeInPreOrder(Tree tree){
-        QNode currentNode;
-        if(tree.Root == null){
-            currentNode = null;
-        }else{
+        QNode currentNode = null;
+        if(tree.Root != null){
             currentNode = new QNode(tree.Root, null);
         }
         QNode firstNode = currentNode;
         while(currentNode != null){
-            QNode rightNode = null;
-            QNode leftNode = null;
             if(currentNode.TNode.Right != null){
-                rightNode = new QNode(currentNode.TNode.Right, null);
+                QNode rightNode = new QNode(currentNode.TNode.Right, null);
                 // if currentNode has a next node than we need to set 
                 // right node before that next node
                 if(currentNode.Next != null){
@@ -66,7 +62,7 @@ public class Queue {
                 }
             }
             if(currentNode.TNode.Left != null){
-                leftNode = new QNode(currentNode.TNode.Left, null);
+                QNode leftNode = new QNode(currentNode.TNode.Left, null);
                 // if currentNode has a next node than we need to set
                 // left node before that next node
                 if(currentNode.Next != null){
@@ -80,12 +76,57 @@ public class Queue {
         }
         return firstNode;
     }
+    public static QNode getTreeInPostOrder(Tree tree){
+        QNode currentNode = null;
+        if(tree.Root != null){
+            currentNode = new QNode(tree.Root, null);
+        }
+        QNode firstNode = currentNode;
+        while(currentNode != null){
+            if(currentNode.TNode.Left != null){
+                QNode leftNode = new QNode(currentNode.TNode.Left, null);
+                // if currentNode has a next node that place
+                // left node in between them
+                if(currentNode.Next != null){
+                    leftNode.Next = currentNode.Next;
+                    currentNode.Next = leftNode;
+                }else{
+                    currentNode.Next = leftNode;
+                }
+            }
+            if(currentNode.TNode.Right != null){
+                QNode rightNode = new QNode(currentNode.TNode.Right, null);
+                // if currentNode has a next node then
+                // set rightNode in between them
+                if(currentNode.Next != null){
+                    rightNode.Next = currentNode.Next;
+                    currentNode.Next = rightNode;
+                }else{
+                    currentNode.Next = rightNode;
+                }
+            }
+            currentNode = currentNode.Next;
+        }
+        return firstNode;
+    }
+    // this method will iterate over the QNode and append each TNode value
+    // to the array list that is going to be returned
     public static ArrayList<Integer> getQNodeAsArrayList(QNode node){
         QNode currentNode = node;
         ArrayList<Integer> nodes = new ArrayList<>();
         while(currentNode != null){
             nodes.add(currentNode.TNode.Val);
             currentNode = currentNode.Next;
+        }
+        return nodes;
+    }
+    // this method will iterate over the QNode and add at the start of the array
+    // list to be returned the value of TNode
+    public static ArrayList<Integer> getQNodeArrayListFromEnd(QNode node){
+        QNode currentNode = node;
+        ArrayList<Integer> nodes = new ArrayList<Integer>();
+        while(currentNode != null){
+            nodes.addFirst(currentNode.TNode.Val);
         }
         return nodes;
     }
