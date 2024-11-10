@@ -6,10 +6,6 @@ public class Tree {
     public Node Root;
     public Tree(Node initNode){
         // initial node cannot be null
-        if(initNode == null){
-            String message = "root node cannot be null";
-            throw new Error(message);
-        }
         this.Root = initNode;
     }
     public void add(Node newNode){
@@ -87,20 +83,98 @@ public class Tree {
         QNode nodesInPostOrder = Queue.getTreeInPostOrder(this);
         return Queue.getQNodeArrayListFromEnd(nodesInPostOrder);
     }
+    // method will help use find the lowest value in currentNode subtree
+    public static Node findLowest(Node currentNode){
+        boolean stop = false;
+        while(stop == false){
+            if(currentNode.Left != null){
+                currentNode = currentNode.Left;
+            }else{
+                break;
+            }
+        }
+        return new Node(currentNode.Val);
+    }
     public void delete(int val){
         Node currentNode = this.Root;
-        // previousNode will serve as a holder
-        // to re balance the tree
-        Node previousNode = null;
+        Node previousNode = currentNode;
         // first we will go through the tree trying to find a node with that value
         // if we find it we delete it and re-balance the tree
         while(currentNode != null){
             if(currentNode.Val == val){
                 // delete and re balance the tree
-                if(previousNode == null){
-                    if(currentNode.Right != null){
+                
+                // currentNode to be deleted has no children, therefore
+                // just delete any reference to that node, no need to re-balance
+
+                if(currentNode.Left == null && currentNode.Right == null){
+                    // if currentNode is the root of the tree then empty tree
+                    if(currentNode.Val == this.Root.Val){
+                        this.Root = null;
                     }
+                    // if currentNode has children but it's not the root node simply
+                    // set the previousNode reference of currentNode to null
+                    if(previousNode.Left.Val == currentNode.Val){
+                        previousNode.Left = null;
+                    }
+                    if(previousNode.Right.Val == currentNode.Val){
+                        previousNode.Right = null;
+                    }
+                    return;
                 }
+                // switchNode will help seek for the new root node of the subtree
+                Node switchNode = null;
+                if(currentNode.Right != null){
+                    switchNode = currentNode.Right;
+                }else{
+                    switchNode = currentNode.Left;
+                }
+                // get lowest value from the subtree and set it as root node
+                // of new tree
+                Node newRootNode = Tree.findLowest(switchNode);
+                Tree newTree = new Tree(newRootNode);
+                ArrayList<Node> nodesToVisit = new ArrayList<Node>();
+                nodesToVisit.add(currentNode);
+                while(nodesToVisit.size() > 0){
+                    ArrayList<Node> newNodesToVisit = new ArrayList<Node>();
+                    for(Node oldNode : nodesToVisit){
+                        // append children of old node to newNodesToVisit
+                        if(oldNode.Left != null){
+                            newNodesToVisit.add(oldNode.Left);
+                        }
+                        if(oldNode.Right != null){
+                            newNodesToVisit.add(oldNode.Right);
+                        }
+                        // if oldNode does not have the same value as the root node
+                        // of the new tree then add it
+                        if(oldNode.Val != newTree.Root.Val){
+                            Node newNode = new Node(oldNode.Val);
+                            newTree.add(newNode);
+                        }
+                    }
+                    nodesToVisit  = newNodesToVisit;
+                }
+                // re balance tree
+
+                // if previousNode is equal to currentNode that means we
+                // are deleting the root node, therefore newRootNode will
+                // become the rootNode of our current tree
+                if(previousNode.Val == currentNode.Val){
+                    this.Root = newRootNode;
+                }
+
+                // if previousNode is not root Node than set newRootNode as either
+                // left or right node of previousNode
+                if(previousNode.Val != currentNode.Val){
+                    if(newRootNode.Val > previousNode.Val){
+                        previousNode.Right = newRootNode;
+                    }
+                    if(newRootNode.Val < previousNode.Val){
+                        previousNode.Left = newRootNode;
+                    }
+                    newTree = null;
+                }
+                
             }else{
                 // keep searching the node
                 if(val > currentNode.Val){
