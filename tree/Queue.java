@@ -46,24 +46,13 @@ public class Queue {
     
     // this method will return a QNode that will be contain
     // all members of the given bst tree in pre order
-    public static QNode getTreeInPreOrder(Tree tree){
+    public static ArrayList<Integer> getTreeInPreOrder(Tree tree){
         QNode currentNode = null;
         if(tree.Root != null){
             currentNode = new QNode(tree.Root, null);
         }
         QNode firstNode = currentNode;
         while(currentNode != null){
-            if(currentNode.TNode.Right != null){
-                QNode rightNode = new QNode(currentNode.TNode.Right, null);
-                // if currentNode has a next node than we need to set 
-                // right node before that next node
-                if(currentNode.Next != null){
-                    rightNode.Next = currentNode.Next;
-                    currentNode.Next = rightNode;
-                }else{
-                    currentNode.Next = rightNode;
-                }
-            }
             if(currentNode.TNode.Left != null){
                 QNode leftNode = new QNode(currentNode.TNode.Left, null);
                 // if currentNode has a next node than we need to set
@@ -75,9 +64,20 @@ public class Queue {
                     currentNode.Next = leftNode;
                 }
             }
+            if(currentNode.TNode.Right != null){
+                QNode rightNode = new QNode(currentNode.TNode.Right, null);
+                // if currentNode has a next node than we need to set 
+                // right node before that next node
+                if(currentNode.Next != null){
+                    rightNode.Next = currentNode.Next;
+                    currentNode.Next = rightNode;
+                }else{
+                    currentNode.Next = rightNode;
+                }
+            }
             currentNode = currentNode.Next;
         }
-        return firstNode;
+        return Queue.getQNodeAsArrayList(firstNode);
     }
     
     // this method will return a QNode that will have every
@@ -119,6 +119,7 @@ public class Queue {
     // to the array list that is going to be returned
     public static ArrayList<Integer> getQNodeAsArrayList(QNode node){
         QNode currentNode = node;
+        System.out.println("motherfucker");
         ArrayList<Integer> nodes = new ArrayList<>();
         while(currentNode != null){
             nodes.add(currentNode.TNode.Val);

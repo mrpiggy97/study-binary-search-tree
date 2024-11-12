@@ -76,8 +76,7 @@ public class Tree {
         return queue.emptyAndGetAsArray();
     }
     public ArrayList<Integer> traverseInPreOrder(){
-        QNode nodesInPreorder = Queue.getTreeInPreOrder(this);
-        return Queue.getQNodeAsArrayList(nodesInPreorder);
+        return Queue.getTreeInPreOrder(this);
     }
     public ArrayList<Integer> traverseInPostOrder(){
         QNode nodesInPostOrder = Queue.getTreeInPostOrder(this);
