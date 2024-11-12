@@ -1,12 +1,15 @@
 package tree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Tree {
     public Node Root;
+    public int NodeCount;
     public Tree(Node initNode){
         // initial node cannot be null
         this.Root = initNode;
+        this.NodeCount = 1;
     }
     public void add(Node newNode){
         Node currentNode = this.Root;
@@ -41,39 +44,30 @@ public class Tree {
                 }
             }
         }
+        this.NodeCount = this.NodeCount+1;
     }
-    public ArrayList<Integer> traverseInOrder(){
-        ArrayList<Node> nodesToVisit = new ArrayList<>();
+    public int[] traverseInOrder(){
+        ArrayList<Node> nodesToVisit = new ArrayList<Node>();
+        int size = this.NodeCount;
+        int[] nodes = new int[size];
         nodesToVisit.add(this.Root);
-        Queue queue = new Queue(null);
+        int index = 0;
         while(nodesToVisit.size() > 0){
-            ArrayList<Node> newNodesToVisit = new ArrayList<>();
+            ArrayList<Node> newNodesToVisit = new ArrayList<Node>();
             for(Node currentNode : nodesToVisit){
-                if(currentNode.Val == this.Root.Val){
-                    QNode rootQNOde = new QNode(currentNode, null);
-                    queue.Head = rootQNOde;
-                    // add nodes if any to newNodesToVisit
-                    if(currentNode.Left != null){
-                        newNodesToVisit.add(currentNode.Left);
-                    }
-                    if(currentNode.Right != null){
-                        newNodesToVisit.add(currentNode.Right);
-                    }
-                }else{
-                    QNode newNode = new QNode(currentNode, null);
-                    queue.addInOrder(newNode);
-                    // add nodes if any to newNodesToVisit
-                    if(currentNode.Left != null){
-                        newNodesToVisit.add(currentNode.Left);
-                    }
-                    if(currentNode.Right != null){
-                        newNodesToVisit.add(currentNode.Right);
-                    }
+                nodes[index] = currentNode.Val;
+                index++;
+                if(currentNode.Left != null){
+                    newNodesToVisit.add(currentNode.Left);
+                }
+                if(currentNode.Right != null){
+                    newNodesToVisit.add(currentNode.Right);
                 }
             }
             nodesToVisit = newNodesToVisit;
         }
-        return queue.emptyAndGetAsArray();
+        Arrays.sort(nodes);
+        return nodes;
     }
     public ArrayList<Integer> traverseInPreOrder(){
         return Queue.getTreeInPreOrder(this);
