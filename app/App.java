@@ -114,7 +114,7 @@ public class App{
         }
     }
     public void printInOrder(){
-        ArrayList<Integer> nodes = this.AppTree.traverseInOrder();
+        int[] nodes = this.AppTree.traverseInOrder();
         System.out.println(nodes.toString());
     }
     public void printPreOrder(){

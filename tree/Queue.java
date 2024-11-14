@@ -17,67 +17,42 @@ public class Queue {
         }
         return nodes;
     }
-    // this method will ensure the queue has the nodes
-    // go in ascending order
-    public void addInOrder(QNode newNode){
-        QNode currentNode = this.Head;
-        QNode previousNode = currentNode;
-        while(currentNode != null){
-            if(newNode.TNode.Val > currentNode.TNode.Val){
-                // if currentNode.next is null that means that
-                // newNode will become the tail of the queue
-                if(currentNode.Next == null){
-                    currentNode.Next = newNode;
-                    break;
-                }else{
-                    previousNode = currentNode;
-                    currentNode = currentNode.Next;
-                }
-            }else{
-             // newNode has found a node that has a smaller value
-             // proceed to set its position between previousNode
-             // and currentNode and break the loop
-             previousNode.Next = newNode;
-             newNode.Next = currentNode;
-             break;
-            }
-        }
-    }
-    
     // this method will return a QNode that will be contain
     // all members of the given bst tree in pre order
-    public static ArrayList<Integer> getTreeInPreOrder(Tree tree){
-        QNode currentNode = null;
-        if(tree.Root != null){
-            currentNode = new QNode(tree.Root, null);
-        }
-        QNode firstNode = currentNode;
+    public static ArrayList<Integer> getTreeInPreOrder(Tree bst){
+        QNode headNode = new QNode(bst.Root, null);
+        QNode currentNode = headNode;
+        ArrayList<Integer> nodes = new ArrayList<>();
         while(currentNode != null){
-            if(currentNode.TNode.Left != null){
-                QNode leftNode = new QNode(currentNode.TNode.Left, null);
-                // if currentNode has a next node than we need to set
-                // left node before that next node
-                if(currentNode.Next != null){
-                    leftNode.Next = currentNode.Next;
-                    currentNode.Next = leftNode;
-                }else{
-                    currentNode.Next = leftNode;
-                }
-            }
+            // if there is a TNode with a right node then add it
             if(currentNode.TNode.Right != null){
-                QNode rightNode = new QNode(currentNode.TNode.Right, null);
-                // if currentNode has a next node than we need to set 
-                // right node before that next node
+                QNode newNode = new QNode(currentNode.TNode.Right,null);
+                // if currentNode already has a next node than place
+                // newNode in between them
                 if(currentNode.Next != null){
-                    rightNode.Next = currentNode.Next;
-                    currentNode.Next = rightNode;
+                    newNode.Next = currentNode.Next;
+                    currentNode.Next = newNode;
                 }else{
-                    currentNode.Next = rightNode;
+                    currentNode.Next = newNode;
                 }
             }
+            // if there is a TNode with a left node then add it
+            if(currentNode.TNode.Left != null){
+                QNode newNode = new QNode(currentNode.TNode.Left,null);
+                // if currentNode already has a next node that place
+                // newNode in between them
+                if(currentNode.Next != null){
+                    newNode.Next = currentNode.Next;
+                    currentNode.Next = newNode;
+                }else{
+                    currentNode.Next = newNode;
+                }
+            }
+            // keep going until there are no more nodes to add
+            nodes.add(currentNode.TNode.Val);
             currentNode = currentNode.Next;
         }
-        return Queue.getQNodeAsArrayList(firstNode);
+        return nodes;
     }
     
     // this method will return a QNode that will have every
@@ -119,7 +94,6 @@ public class Queue {
     // to the array list that is going to be returned
     public static ArrayList<Integer> getQNodeAsArrayList(QNode node){
         QNode currentNode = node;
-        System.out.println("motherfucker");
         ArrayList<Integer> nodes = new ArrayList<>();
         while(currentNode != null){
             nodes.add(currentNode.TNode.Val);
