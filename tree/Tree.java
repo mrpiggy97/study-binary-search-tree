@@ -73,8 +73,7 @@ public class Tree {
         return Queue.getTreeInPreOrder(this);
     }
     public ArrayList<Integer> traverseInPostOrder(){
-        QNode nodesInPostOrder = Queue.getTreeInPostOrder(this);
-        return Queue.getQNodeArrayListFromEnd(nodesInPostOrder);
+        return Queue.getTreeInPostOrder(this);
     }
     // method will help use find the lowest value in currentNode subtree
     public static Node findLowest(Node currentNode){

@@ -22,7 +22,7 @@ public class Queue {
     public static ArrayList<Integer> getTreeInPreOrder(Tree bst){
         QNode headNode = new QNode(bst.Root, null);
         QNode currentNode = headNode;
-        ArrayList<Integer> nodes = new ArrayList<>();
+        ArrayList<Integer> nodes = new ArrayList<Integer>();
         while(currentNode != null){
             // if there is a TNode with a right node then add it
             if(currentNode.TNode.Right != null){
@@ -57,38 +57,36 @@ public class Queue {
     
     // this method will return a QNode that will have every
     // member of the given tree in post order
-    public static QNode getTreeInPostOrder(Tree tree){
-        QNode currentNode = null;
-        if(tree.Root != null){
-            currentNode = new QNode(tree.Root, null);
+    public static ArrayList<Integer> getTreeInPostOrder(Tree tree){
+        if(tree.Root == null){
+            return null;
         }
-        QNode firstNode = currentNode;
+        QNode head = new QNode(tree.Root,null);
+        QNode currentNode = head;
+        ArrayList<Integer> nodes = new ArrayList<Integer>();
         while(currentNode != null){
             if(currentNode.TNode.Left != null){
-                QNode leftNode = new QNode(currentNode.TNode.Left, null);
-                // if currentNode has a next node that place
-                // left node in between them
+                QNode newNode = new QNode(currentNode.TNode.Left,null);
                 if(currentNode.Next != null){
-                    leftNode.Next = currentNode.Next;
-                    currentNode.Next = leftNode;
+                    newNode.Next = currentNode.Next;
+                    currentNode.Next = newNode;
                 }else{
-                    currentNode.Next = leftNode;
+                    currentNode.Next = newNode;
                 }
             }
             if(currentNode.TNode.Right != null){
-                QNode rightNode = new QNode(currentNode.TNode.Right, null);
-                // if currentNode has a next node then
-                // set rightNode in between them
+                QNode newNode = new QNode(currentNode.TNode.Right,null);
                 if(currentNode.Next != null){
-                    rightNode.Next = currentNode.Next;
-                    currentNode.Next = rightNode;
+                    newNode.Next = currentNode.Next;
+                    currentNode.Next = newNode;
                 }else{
-                    currentNode.Next = rightNode;
+                    currentNode.Next = newNode;
                 }
             }
+            nodes.addFirst(currentNode.TNode.Val);
             currentNode = currentNode.Next;
         }
-        return firstNode;
+        return nodes;
     }
     // this method will iterate over the QNode and append each TNode value
     // to the array list that is going to be returned
