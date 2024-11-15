@@ -107,6 +107,10 @@ public class Tree {
         }
     }
     public void delete(int val){
+        if(this.Root == null){
+            System.out.println("tree is empty");
+            return;
+        }
         Node currentNode = this.Root;
         Node previousNode = currentNode;
         // first we will go through the tree trying to find a node with that value
