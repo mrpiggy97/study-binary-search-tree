@@ -185,7 +185,7 @@ public class Tree {
                     if(currentNode.Right == null){
                         // no node with that value has been found
                         // end loop
-                        return;
+                        currentNode = currentNode.Right;
                     }else{
                         previousNode = currentNode;
                         currentNode = currentNode.Right;
@@ -194,7 +194,7 @@ public class Tree {
                     if(currentNode.Left == null){
                         // no node with that value has been found
                         // end loop
-                        return;
+                        currentNode = currentNode.Left;
                     }else{
                         previousNode = currentNode;
                         currentNode = currentNode.Left;
